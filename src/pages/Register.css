@@ -1,0 +1,75 @@
+/* Centers the card on the page */
+.register-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5; /* A nice Facebook-like background color */
+}
+
+/* The white box holding the form */
+.register-card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.register-title {
+  text-align: center;
+  color: #1877f2; /* Facebook blue */
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+/* Form layout */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Adds space between every input */
+}
+
+/* Inputs */
+.register-input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Blue border when the user clicks inside an input */
+.register-input:focus {
+  border-color: #1877f2;
+}
+
+/* The Sign Up Button */
+.register-btn {
+  background-color: #42b72a; /* Facebook green */
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.register-btn:hover {
+  background-color: #36a420;
+}
+
+/* Error message box */
+.error-alert {
+  background-color: #ffebe8;
+  color: #dd3c10;
+  border: 1px solid #dd3c10;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+}

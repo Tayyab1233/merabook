@@ -1,0 +1,134 @@
+/* --- Main Layout --- */
+.feed-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 60px);
+  font-family: Arial, sans-serif;
+}
+
+.feed-container {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* --- Search Bar --- */
+.search-bar {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 20px; /* Makes it look like a pill */
+  font-size: 16px;
+  margin-bottom: 20px;
+  outline: none;
+  box-sizing: border-box; /* Keeps padding inside the width */
+}
+
+.search-bar:focus {
+  border-color: #1877f2;
+}
+
+/* --- Create Post Button --- */
+.create-post-btn {
+  width: 100%;
+  background-color: #42b72a; /* Facebook Green */
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.create-post-btn:hover {
+  background-color: #36a420;
+}
+
+/* --- Empty State --- */
+.empty-state {
+  text-align: center;
+  color: #65676b;
+  padding: 40px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* --- Post Cards --- */
+.post-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.post-author {
+  font-weight: bold;
+  color: #1877f2;
+}
+
+.post-date {
+  color: #65676b;
+  font-size: 14px;
+}
+
+.post-text {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.post-image {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* --- Action Buttons (Edit & Delete) --- */
+.post-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.edit-btn {
+  background-color: #e4e6eb;
+  color: #050505;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  flex: 1; /* Shares space equally with delete button */
+}
+
+.edit-btn:hover {
+  background-color: #d8dadf;
+}
+
+.delete-btn {
+  background-color: #ff4a4a;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  flex: 1; /* Shares space equally with edit button */
+}
+
+.delete-btn:hover {
+  background-color: #e60000;
+}

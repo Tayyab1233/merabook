@@ -1,0 +1,29 @@
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1877f2; /* Facebook Blue */
+  padding: 15px 30px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.navbar-logo {
+  margin: 0;
+}
+
+.navbar-user-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logout-btn {
+  background-color: #ff4a4a;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}

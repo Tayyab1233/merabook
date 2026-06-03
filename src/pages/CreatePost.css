@@ -1,0 +1,110 @@
+.create-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 60px);
+  font-family: Arial, sans-serif;
+}
+
+.create-card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+.create-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #050505;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.create-textarea {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  resize: none; /* Stops the user from dragging the corner */
+  outline: none;
+}
+
+.create-textarea:focus {
+  border-color: #1877f2;
+}
+
+.file-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.file-label {
+  font-size: 14px;
+  color: #65676b;
+  font-weight: bold;
+}
+
+.create-file-input {
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.preview-container {
+  background-color: #f7f8fa;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.preview-title {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #65676b;
+}
+
+.image-preview {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.post-btn {
+  flex: 1;
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  flex: 1;
+  background-color: #e4e6eb;
+  color: #050505;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
