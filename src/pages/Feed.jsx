@@ -4,83 +4,93 @@ import './Feed.css';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
-  
-  // NEW: State to hold what the user types in the search bar
   const [searchTerm, setSearchTerm] = useState(''); 
   
   const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
+  // Load posts and protect route.
+  // BUG FIXED: 'currentUser' is removed from the array below to stop the infinite loop!
   useEffect(() => {
     if (!currentUser) {
-      return navigate('/login');
+      navigate('/login');
+      return; 
     }
+    
     const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
+    // Sort so newest posts show at the very top
     savedPosts.sort((a, b) => b.createdAt - a.createdAt);
     setPosts(savedPosts);
-  }, [navigate, currentUser]);
+  }, [navigate]); 
 
-  // --- NEW: DELETE LOGIC ---
+  // --- DELETE LOGIC ---
   const handleDelete = (postId) => {
-    // 1. Show a confirmation popup
     const confirmDelete = window.confirm("Are you sure you want to delete this post?");
     if (confirmDelete) {
-      // 2. Filter the array: Keep every post EXCEPT the one with this ID
       const updatedPosts = posts.filter((post) => post.id !== postId);
-      
-      // 3. Save the new array to localStorage and update the screen
       localStorage.setItem('posts', JSON.stringify(updatedPosts));
       setPosts(updatedPosts);
     }
   };
 
-  // --- NEW: SEARCH LOGIC ---
-  // Instead of mapping the raw 'posts' array, we map this 'displayedPosts' array.
-  // It only keeps posts where the text includes the search term.
-  const displayedPosts = posts.filter((post) => 
-    post.text.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // --- SEARCH LOGIC ---
+  const displayedPosts = posts.filter((post) => {
+     // Safety check in case a post has no text
+     const postText = post.text || '';
+     return postText.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <div className="feed-wrapper">
       <div className="feed-container">
         
-        {/* NEW: Search Bar Input */}
+        {/* Search Bar Input */}
         <input 
           type="text" 
           placeholder="Search posts..." 
           className="search-bar"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ width: '100%', padding: '10px', marginBottom: '20px', borderRadius: '5px', border: '1px solid #ccc' }}
         />
 
-        <button className="create-post-btn" onClick={() => navigate('/create')}>
+        <button 
+          className="create-post-btn" 
+          onClick={() => navigate('/create')}
+          style={{ width: '100%', padding: '12px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer', marginBottom: '20px' }}
+        >
           + Create New Post
         </button>
 
-        {/* Change 'posts' to 'displayedPosts' to make the search work */}
+        {/* Display Posts */}
         {displayedPosts.length === 0 ? (
-          <div className="empty-state">
+          <div className="empty-state" style={{ textAlign: 'center', padding: '40px', backgroundColor: 'white', borderRadius: '8px' }}>
             <h3>No posts found!</h3>
           </div>
         ) : (
           displayedPosts.map((post) => (
-            <div key={post.id} className="post-card">
+            <div key={post.id} className="post-card" style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', marginBottom: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
               
-              <div className="post-header">
-                <span className="post-author">{post.authorName}</span>
-                <span className="post-date">{new Date(post.createdAt).toLocaleString()}</span>
+              <div className="post-header" style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #eee', paddingBottom: '10px', marginBottom: '10px' }}>
+                <span className="post-author" style={{ fontWeight: 'bold', color: '#1877f2' }}>{post.authorName}</span>
+                <span className="post-date" style={{ color: 'gray', fontSize: '0.9em' }}>{new Date(post.createdAt).toLocaleString()}</span>
               </div>
 
-              <p className="post-text">{post.text}</p>
+              <p className="post-text" style={{ whiteSpace: 'pre-wrap', marginBottom: '15px' }}>{post.text}</p>
               
-              {post.image && <img src={post.image} alt="Post" className="post-image" />}
+              {post.image && (
+                <img src={post.image} alt="Post attachment" className="post-image" style={{ width: '100%', maxHeight: '400px', objectFit: 'cover', borderRadius: '8px', marginBottom: '15px' }} />
+              )}
 
-              {currentUser.email === post.authorId && (
-                <div className="post-actions">
-                  <button className="edit-btn" onClick={() => navigate(`/edit/${post.id}`)}>Edit</button>
-                  {/* NEW: Delete Button */}
-                  <button className="delete-btn" onClick={() => handleDelete(post.id)}>Delete</button>
+              {/* Only show Edit/Delete if the post belongs to the person logged in */}
+              {currentUser && currentUser.email === post.authorId && (
+                <div className="post-actions" style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                  <button onClick={() => navigate(`/edit/${post.id}`)} style={{ padding: '8px 16px', backgroundColor: '#ffc107', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
+                    Edit
+                  </button>
+                  <button onClick={() => handleDelete(post.id)} style={{ padding: '8px 16px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
+                    Delete
+                  </button>
                 </div>
               )}
 

@@ -1,113 +1,112 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CreatePost.css';
 
 const CreatePost = () => {
-  const navigate = useNavigate();
-  
   const [text, setText] = useState('');
-  const [image, setImage] = useState(''); // This will hold our Base64 string
+  const [image, setImage] = useState(null); // Will hold the Base64 image
   const [error, setError] = useState('');
-
-  // 1. Get the current user
+  
+  const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-  // --- AUTHENTICATION GUARD ---
+  // Protect the route: send back to login if not signed in
   useEffect(() => {
     if (!currentUser) {
       navigate('/login');
     }
-  }, [navigate, currentUser]);
+  }, [currentUser, navigate]);
 
-  // --- IMAGE TO BASE64 LOGIC ---
+  // Handle Image Upload and convert to Base64
   const handleImageChange = (e) => {
-    // Grab the first file the user selected
-    const file = e.target.files[0]; 
-    
+    const file = e.target.files[0];
     if (file) {
-      // Create a new FileReader (built into JavaScript)
-      const reader = new FileReader(); 
-      
-      // Tell the reader what to do WHEN it finishes reading the file
+      const reader = new FileReader();
       reader.onloadend = () => {
-        // reader.result contains the Base64 text string
-        setImage(reader.result); 
+        setImage(reader.result); // This is the Base64 string
       };
-      
-      // Tell the reader to start reading the file
       reader.readAsDataURL(file);
     }
   };
 
-  // --- SUBMIT LOGIC ---
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Check: Are both empty? We need at least one to make a post.
-    if (!text.trim() && !image) {
-      return setError("Please write something or attach an image.");
+    // Validation: Both text and image empty = error
+    if (text.trim() === '' && !image) {
+      setError('You must add some text or an image to post!');
+      return;
     }
 
-    // Build the new post object exactly as required
+    // Create the post object
     const newPost = {
       id: Date.now().toString(),
       authorId: currentUser.email,
       authorName: currentUser.name,
       text: text,
-      image: image,
+      image: image, // Base64 string or null
       createdAt: Date.now(),
-      updatedAt: Date.now() // Set it to now initially
+      updatedAt: Date.now()
     };
 
-    // Grab old posts, add the new one, and save back to storage
+    // Grab existing posts, add the new one, and save back to local storage
     const existingPosts = JSON.parse(localStorage.getItem('posts')) || [];
     existingPosts.push(newPost);
     localStorage.setItem('posts', JSON.stringify(existingPosts));
 
-    // Send them back to the feed to see their new post!
+    // Redirect back to the feed
     navigate('/feed');
   };
 
   return (
-    <div className="create-wrapper">
-      <div className="create-card">
-        <h2 className="create-title">Create Post</h2>
+    <div className="create-post-container" style={{ maxWidth: '600px', margin: '40px auto', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+      <h2>Create New Post</h2>
+      
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         
-        {error && <div className="error-alert">{error}</div>}
+        <textarea 
+          placeholder="What's on your mind?" 
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          rows="5"
+          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc', resize: 'vertical' }}
+        />
 
-        <form onSubmit={handleSubmit} className="create-form">
-          <textarea 
-            className="create-textarea" 
-            rows="4" 
-            placeholder={`What's on your mind, ${currentUser?.name}?`}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+        <div>
+          <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Attach an Image (Optional):</label>
+          <input 
+            type="file" 
+            accept="image/*" 
+            onChange={handleImageChange} 
           />
-          
-          <div className="file-input-container">
-            <label className="file-label">Attach Image (Optional)</label>
-            <input 
-              type="file" 
-              accept="image/*" 
-              className="create-file-input"
-              onChange={handleImageChange} 
-            />
-          </div>
+        </div>
 
-          {/* PREVIEW: If an image exists in state, show it before posting */}
-          {image && (
-            <div className="preview-container">
-              <p className="preview-title">Image Preview:</p>
-              <img src={image} alt="Preview" className="image-preview" />
-            </div>
-          )}
-
-          <div className="button-group">
-            <button type="submit" className="post-btn">Post</button>
-            <button type="button" className="cancel-btn" onClick={() => navigate('/feed')}>Cancel</button>
+        {/* Show a preview of the image if the user selects one */}
+        {image && (
+          <div style={{ marginTop: '10px' }}>
+            <p>Image Preview:</p>
+            <img src={image} alt="Preview" style={{ maxWidth: '100%', borderRadius: '5px' }} />
           </div>
-        </form>
-      </div>
+        )}
+
+        <button 
+          type="submit" 
+          style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          Post
+        </button>
+        
+        <button 
+          type="button" 
+          onClick={() => navigate('/feed')}
+          style={{ padding: '10px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          Cancel
+        </button>
+
+      </form>
     </div>
   );
 };
