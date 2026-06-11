@@ -3,6 +3,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Feed from './pages/Feed';
 import CreatePost from './pages/CreatePost'; // <-- 1. Import it
+import EditPost from './pages/EditPost';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         
         {/* 2. Add the route here! */}
         <Route path="/create" element={<CreatePost />} />
+        <Route path="/edit/:postId" element={<EditPost />} />
       </Routes>
     </Router>
   );
